@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CallToAction() {
   return (
@@ -23,9 +24,18 @@ export default function CallToAction() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full px-4 py-2 mb-6"
+            className="inline-flex items-center space-x-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full px-5 py-3 mb-6 border border-cyan-400/30"
           >
-            <Sparkles className="w-5 h-5 text-cyan-400" />
+            <div className="w-6 h-6 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-full flex items-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Jarvis Logo"
+                width={16}
+                height={16}
+                className="w-4 h-4 object-contain"
+              />
+            </div>
+            <Sparkles className="w-5 h-5 text-cyan-400 animate-pulse" />
             <span className="text-sm font-medium text-cyan-400">Limited Time Offer</span>
           </motion.div>
           

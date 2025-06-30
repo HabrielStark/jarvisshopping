@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import Image from 'next/image';
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -45,10 +46,14 @@ export default function VideoModal({ isOpen, onClose }: VideoModalProps) {
                 <source src="/demo.mp4" type="video/mp4" />
                 <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+                    <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-2xl flex items-center justify-center border border-cyan-400/30 shadow-2xl shadow-cyan-400/20">
+                      <Image
+                        src="/logo.png"
+                        alt="Jarvis Logo"
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 object-contain"
+                      />
                     </div>
                     <p>Demo video placeholder</p>
                     <p className="text-sm mt-2">Your 60-second Jarvis demo would play here</p>

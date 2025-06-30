@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SignInButton, SignedOut, SignedIn, UserButton } from '@clerk/nextjs';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
@@ -14,21 +14,40 @@ const navItems = [
   { href: '/docs', label: 'Docs' },
 ];
 
+// Mock auth state for demo
+const useMockAuth = () => {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  
+  return {
+    isSignedIn,
+    signIn: () => setIsSignedIn(true),
+    signOut: () => setIsSignedIn(false)
+  };
+};
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { isSignedIn, signIn, signOut } = useMockAuth();
 
   return (
     <nav className="fixed top-0 w-full z-50 glass border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-300 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Zap className="w-6 h-6 text-gray-900" />
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-400/20 to-teal-300/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-cyan-400/30">
+                <Image
+                  src="/logo.png"
+                  alt="Jarvis Logo"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 object-contain"
+                  priority
+                />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-teal-300 rounded-lg blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/30 to-teal-300/30 rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
             </div>
             <span className="text-xl font-bold text-gradient">Jarvis</span>
           </Link>
@@ -60,25 +79,26 @@ export default function Navbar() {
 
           {/* Auth Button */}
           <div className="hidden md:flex items-center">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="btn-primary">
-                  Sign Up
+            {!isSignedIn ? (
+              <button 
+                onClick={signIn}
+                className="btn-primary"
+              >
+                Sign Up (Demo)
+              </button>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link href="/dashboard" className="text-sm text-gray-300 hover:text-cyan-400 transition-colors">
+                  Dashboard
+                </Link>
+                <button 
+                  onClick={signOut}
+                  className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm hover:scale-110 transition-transform"
+                >
+                  U
                 </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <Link href="/dashboard" className="mr-4 text-sm text-gray-300 hover:text-cyan-400 transition-colors">
-                Dashboard
-              </Link>
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "w-8 h-8 ring-2 ring-cyan-400/50 hover:ring-cyan-400 transition-all"
-                  }
-                }}
-              />
-            </SignedIn>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -118,14 +138,17 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="pt-3 border-t border-white/10">
-                <SignedOut>
-                  <SignInButton mode="modal">
-                    <button className="btn-primary w-full">
-                      Sign Up
-                    </button>
-                  </SignInButton>
-                </SignedOut>
-                <SignedIn>
+                {!isSignedIn ? (
+                  <button 
+                    onClick={() => {
+                      signIn();
+                      setIsOpen(false);
+                    }}
+                    className="btn-primary w-full"
+                  >
+                    Sign Up (Demo)
+                  </button>
+                ) : (
                   <Link
                     href="/dashboard"
                     onClick={() => setIsOpen(false)}
@@ -133,7 +156,7 @@ export default function Navbar() {
                   >
                     Dashboard
                   </Link>
-                </SignedIn>
+                )}
               </div>
             </div>
           </motion.div>
