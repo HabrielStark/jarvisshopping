@@ -14,10 +14,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && localStorage.getItem("jarvis-auth") === "1") {
-      router.replace("/demo");
-    }
-  }, [router]);
+    // No auto-redirect to /demo
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +29,7 @@ export default function LoginPage() {
         localStorage.setItem("jarvis-auth", "1");
         router.replace("/demo");
       } else {
-        setError("Неверный email или пароль. Попробуйте demo@jarvis.ai / demo123 или guest / guest.");
+        setError("Invalid email or password. Try demo@jarvis.ai / demo123 or guest / guest.");
         setLoading(false);
       }
     }, 900);
@@ -61,13 +59,13 @@ export default function LoginPage() {
             <div className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center shadow-xl mb-3 animate-spin-slow">
               <Image src="/logo.png" alt="Jarvis Logo" width={48} height={48} className="rounded-full" />
             </div>
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-cyan-400 to-purple-500 mb-1">Вход в Jarvis</h1>
+            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-cyan-400 to-purple-500 mb-1">Sign in to Jarvis</h1>
             <p className="text-gray-300 text-sm">AI Shopping Negotiator</p>
           </div>
           <div className="w-full mb-4">
             <input
               type="email"
-              placeholder="Email (demo@jarvis.ai или guest)"
+              placeholder="Email (demo@jarvis.ai or guest)"
               value={email}
               onChange={e => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white/10 border border-cyan-400/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 mb-3 transition-all"
@@ -76,7 +74,7 @@ export default function LoginPage() {
             />
             <input
               type="password"
-              placeholder="Пароль (demo123 или guest)"
+              placeholder="Password (demo123 or guest)"
               value={password}
               onChange={e => setPassword(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white/10 border border-cyan-400/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all"
@@ -89,7 +87,7 @@ export default function LoginPage() {
             className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-bold text-lg shadow-lg hover:scale-105 transition-transform mb-3 disabled:opacity-60"
             disabled={loading}
           >
-            {loading ? "Входим..." : "Войти"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
           <button
             type="button"
@@ -97,10 +95,10 @@ export default function LoginPage() {
             onClick={handleGuest}
             disabled={loading}
           >
-            Войти как гость
+            Sign in as Guest
           </button>
           <div className="text-xs text-gray-400 mt-4 text-center">
-            <span>Демо: demo@jarvis.ai / demo123<br />или guest / guest</span>
+            <span>Demo: demo@jarvis.ai / demo123<br />or guest / guest</span>
           </div>
         </form>
       </div>
